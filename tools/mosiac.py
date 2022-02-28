@@ -1,22 +1,22 @@
+'''
+Descripttion: 
+version: 
+Author: xiaoshuyui
+email: guchengxi1994@qq.com
+Date: 2022-02-28 19:00:56
+LastEditors: xiaoshuyui
+LastEditTime: 2022-02-28 19:04:11
+'''
 import numpy as np
 import cv2
-import os
-from models import FileNotFoundException, CannotLoadImageByOpencvException
+from common.load_img import load_image
 
 
 def img_mosiac(p: str, step: int = 2, begin=(0, 0), end=(np.Inf, np.Inf)):
     """doc can be found in ../docs/mosiac.md
 
     """
-    if not os.path.exists(p):
-        print("pppppp")
-        raise FileNotFoundException("{} is not exists".format(p))
-
-    img = cv2.imread(p)
-
-    if img is None:
-        raise CannotLoadImageByOpencvException(
-            "Cannot load image,check it first".format(p))
+    img = load_image(p)
 
     assert begin[0] < end[0] and begin[1] < end[1], "param error"
 
