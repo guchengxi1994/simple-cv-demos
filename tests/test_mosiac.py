@@ -1,5 +1,10 @@
+import sys
+sys.path.append("..")
+
 from tools.mosiac import img_mosiac
 import cv2
+
+# result = img_mosiac("D:\\github_repo\\simple-cv-demos\\static\\0.png",step=20,)
 
 result = img_mosiac("D:\\github_repo\\simple-cv-demos\\static\\0.png",step=20,begin=(200,200),end=(400,400))
 

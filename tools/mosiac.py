@@ -7,16 +7,22 @@ Date: 2022-02-28 19:00:56
 LastEditors: xiaoshuyui
 LastEditTime: 2022-02-28 19:04:11
 '''
-import numpy as np
 import cv2
+import numpy as np
+from _types import StrOrArray
 from common.load_img import load_image
 
 
-def img_mosiac(p: str, step: int = 2, begin=(0, 0), end=(np.Inf, np.Inf)):
-    """doc can be found in ../docs/mosiac.md
-
+def img_mosiac(p: StrOrArray,
+               step: int = 2,
+               begin=(0, 0),
+               end=(np.Inf, np.Inf)):
+    """see: $projectDir/docs/mosiac.md
     """
-    img = load_image(p)
+    if type(p) == np.ndarray:
+        img = p
+    else:
+        img = load_image(p)
 
     assert begin[0] < end[0] and begin[1] < end[1], "param error"
 
