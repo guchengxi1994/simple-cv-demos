@@ -1,2 +1,4 @@
 opencv_python==4.2.0.32
 numpy==1.19.3
+rich==11.2.0
+python-i18n[YAML]
