@@ -14,7 +14,6 @@ from models import FileNotFoundException, CannotLoadImageByOpencvException
 
 def load_image(p:str)-> np.ndarray:
     if not os.path.exists(p):
-        print("pppppp")
         raise FileNotFoundException("{} is not exists".format(p))
 
     img = cv2.imread(p)

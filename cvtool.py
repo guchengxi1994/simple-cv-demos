@@ -16,6 +16,7 @@ from rich.console import Console
 from rich.syntax import Syntax
 
 from common.load_img import load_image
+from models.exceptions import InputMustBeAnInteger
 from qa import __keys__, __samples__
 from tools.mosiac import img_mosiac
 
@@ -28,7 +29,8 @@ __functions__ = {
 
 class CvTool:
 
-    __loaded_keys = {}
+    loaded_keys = {}
+    name = "cv-tool"
 
     def __init__(self, p: str) -> None:
         """p is the image path
@@ -72,13 +74,16 @@ class CvTool:
     @classmethod
     def search(cls, question: str = "", threshold: float = 0.3):
         if question != "":
-            questionWordList = question.split(" ")
+            questionWordList = question.replace("how",
+                                                "").replace("to",
+                                                            "").split(" ")
             matches = []
-            if not cls.__loaded_keys:
+            if not cls.loaded_keys:
                 for i in range(len(__keys__)):
-                    cls.__loaded_keys[__keys__[i]] = __keys__[i].split(" ")
+                    cls.loaded_keys[__keys__[i]] = __keys__[i].replace(
+                        "how to", "").split(" ")
 
-            for i in cls.__loaded_keys.items():
+            for i in cls.loaded_keys.items():
                 matches.append((cls.__matchSeq(questionWordList, i[1]), i[0]))
 
             matches.sort(key=lambda x: x[0], reverse=True)
@@ -95,4 +100,35 @@ class CvTool:
                                 line_numbers=True)
                 console.print(syntax)
         else:
-            pass
+            from rich.table import Table
+            table = Table(title="Supported questions")
+            table.add_column("Id",
+                             justify="center",
+                             style="cyan",
+                             no_wrap=True)
+            table.add_column("Question", justify="center", style="cyan")
+
+            for i in range(0, len(__keys__)):
+                table.add_row(str(i + 1), __keys__[0])
+
+            console.print(table)
+
+            key = ""
+
+            while key != 'q':
+                key = input("Input an id, or press 'q' to quit:")
+                # print(key)
+                try:
+                    key = int(key)
+                    if key - 1 in range(0, len(__keys__)):
+                        my_code = __samples__[__keys__[key - 1]]
+                        syntax = Syntax(my_code,
+                                        "python",
+                                        theme="monokai",
+                                        line_numbers=True)
+                        console.print(syntax)
+                        break
+                    else:
+                        print("input was not in range")
+                except:
+                    raise InputMustBeAnInteger("input must be an integer")

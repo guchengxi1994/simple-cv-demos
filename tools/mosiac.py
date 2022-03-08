@@ -16,7 +16,8 @@ from common.load_img import load_image
 def img_mosiac(p: StrOrArray,
                step: int = 2,
                begin=(0, 0),
-               end=(np.Inf, np.Inf)):
+               end=(np.Inf, np.Inf),
+               returnScale: bool = False):
     """see: $projectDir/docs/mosiac.md
     """
     if type(p) == np.ndarray:
@@ -49,11 +50,21 @@ def img_mosiac(p: StrOrArray,
     if begin[1] >= startY:
         startY = begin[1]
 
+    countX = 0
+    countY = 0
+
     for i in imgList:
+        countX = 0
+        countY = 0
         for r in range(startX, endX, step):
+            countX += 1
             for c in range(startY, endY, step):
+                countY += 1
                 _mean = np.mean(i[r:r + step, c:c + step])
                 i[r:r + step, c:c + step] = _mean
 
     result = cv2.merge(imgList)
-    return result
+    if not returnScale:
+        return result
+    else:
+        return result, (countX, countY)

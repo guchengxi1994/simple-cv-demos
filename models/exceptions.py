@@ -6,3 +6,6 @@ class CannotLoadImageByOpencvException(Exception):
 
 class IsNotAnImageException(Exception):
     ...
+
+class InputMustBeAnInteger(Exception):
+    ...
