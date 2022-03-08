@@ -19,11 +19,13 @@ from common.load_img import load_image
 from models.exceptions import InputMustBeAnInteger
 from qa import __keys__, __samples__
 from tools.mosiac import img_mosiac
+from tools.mosiac_with_masks import img_mosiac_with_masks
 
 console = Console()
 
 __functions__ = {
     "mosiac": img_mosiac,
+    "mosiac with masks":img_mosiac_with_masks,
 }
 
 
@@ -65,6 +67,20 @@ class CvTool:
                     markdown = Markdown(f.read())
                 console.print(markdown)
                 print("============ end of doc =============")
+        else:
+            from rich.table import Table
+            table = Table(title="Supported tools")
+            table.add_column("Id",
+                             justify="center",
+                             style="cyan",
+                             no_wrap=True)
+            table.add_column("Tools", justify="center", style="cyan")
+            fkeys = __functions__.keys()
+            for i in range(0,len(fkeys)):
+                table.add_row(str(i + 1), fkeys[0])
+            
+            console.print(table)
+
 
     @staticmethod
     def __matchSeq(a: list, b: list) -> float:

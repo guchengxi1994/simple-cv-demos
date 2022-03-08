@@ -25,7 +25,7 @@ class CvToolDecorator:
                             " or ".join(list(str(x) for x in paramTypeList)))
 
                     if len(paramRange) > 0:
-                        assert _arg in paramTypeList, "input error"
+                        assert _arg in paramRange, "input error"
 
                 if paramIndex != -1 and paramIndex < len(args):
                     _arg = args[paramIndex]
@@ -36,7 +36,7 @@ class CvToolDecorator:
                             " or ".join(list(str(x) for x in paramTypeList)))
 
                     if len(paramRange) > 0:
-                        assert _arg in paramTypeList, "input error"
+                        assert _arg in paramRange, "input error"
 
                 return func(*args, **kwargs)
 
